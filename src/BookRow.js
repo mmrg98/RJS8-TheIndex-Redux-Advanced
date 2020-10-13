@@ -1,0 +1,23 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+const BookRow = ({ book }) => {
+  const authors = book.authors.map(author => (
+    <div key={author.name}>
+      <Link to={`/authors/${author.id}`}>{author.name}</Link>
+    </div>
+  ));
+  return (
+    <tr>
+      <td>{book.title}</td>
+      <td>{authors}</td>
+      <td>
+        <Link to={`/books/${book.color}`}>
+          <button className="btn" style={{ backgroundColor: book.color }} />
+        </Link>
+      </td>
+    </tr>
+  );
+};
+
+export default BookRow;
