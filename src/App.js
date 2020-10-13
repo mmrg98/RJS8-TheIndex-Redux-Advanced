@@ -17,17 +17,17 @@ const App = () => {
   const [authors, setAuthors] = useState([]);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState([]);
-  const fetchAllAuthors = async () => {
-    const res = await instance.get("/api/authors/");
-    return res.data;
-  };
-
-  const fetchAllBooks = async () => {
-    const res = await instance.get("/api/books/");
-    return res.data;
-  };
 
   useEffect(() => {
+    const fetchAllAuthors = async () => {
+      const res = await instance.get("/api/authors/");
+      return res.data;
+    };
+
+    const fetchAllBooks = async () => {
+      const res = await instance.get("/api/books/");
+      return res.data;
+    };
     const fetchAll = async () => {
       try {
         const authorsData = await fetchAllAuthors();
@@ -50,15 +50,15 @@ const App = () => {
       return (
         <Switch>
           <Redirect exact from="/" to="/authors" />
-          <Route path="/authors/:authorID" component={AuthorDetail} />
-          <Route
-            path="/authors/"
-            render={props => <AuthorsList {...props} authors={authors} />}
-          />
-          <Route
-            path="/books/:bookColor?"
-            render={props => <BookList {...props} books={books} />}
-          />
+          <Route path="/authors/:authorID">
+            <AuthorDetail />
+          </Route>
+          <Route path="/authors/">
+            <AuthorsList authors={authors} />
+          </Route>
+          <Route path="/books/:bookColor?">
+            <BookList books={books} />
+          </Route>
         </Switch>
       );
     }
