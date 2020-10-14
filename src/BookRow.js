@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const BookRow = ({ book }) => {
   const authors = book.authors.map(author => (
-    <div key={author.name}>
+    <div key={author.id}>
       <Link to={`/authors/${author.id}`}>{author.name}</Link>
     </div>
   ));

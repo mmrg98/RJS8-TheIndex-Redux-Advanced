@@ -1,39 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {connect} from "react-redux"
 
 // Components
 import BookTable from "./BookTable";
-import Loading from "./Loading";
+
 
 //Route
-import { useParams } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
 
 const instance = axios.create({
   baseURL: "https://the-index-api.herokuapp.com"
 });
 
 const AuthorDetail = props => {
-  const [author, setAuthor] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { authorID } = useParams();
-  useEffect(() => {
-    const getAuthor = async () => {
-      setLoading(true);
-      try {
-        const res = await instance.get(`/api/authors/${authorID}`);
-        const authorData = res.data;
-        setAuthor(authorData);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getAuthor(authorID);
-  }, [authorID]);
+  const {authorID} = useParams();
 
-  if (loading) {
-    return <Loading />;
-  } else {
+  const author = props.authors.find((author) => author.id === +authorID)
+
+  if (!author) return <Redirect to='/authors'/>
+  author.books = author.books.map(bookID => props.books.find(book => book.id === bookID));
+ 
     const authorName = `${author.first_name} ${author.last_name}`;
     return (
       <div className="author">
@@ -49,6 +36,9 @@ const AuthorDetail = props => {
       </div>
     );
   }
-};
 
-export default AuthorDetail;
+  const mapStateToProps = (state) =>({
+    authors: state.authorsState.authors,
+    books: state.booksState.books
+  })
+  export default connect(mapStateToProps)(AuthorDetail);

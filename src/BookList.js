@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {connect} from 'react-redux'
 
 // Components
 import SearchBar from "./SearchBar";
@@ -32,4 +33,7 @@ const BookList = props => {
   );
 };
 
-export default BookList;
+const mapStateToProps = (state) =>({
+  books: state.booksState.books
+})
+export default connect(mapStateToProps)(BookList);

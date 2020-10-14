@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import {connect} from 'react-redux'
 // Components
 import AuthorCard from "./AuthorCard";
 import SearchBar from "./SearchBar";
@@ -28,4 +28,7 @@ const AuthorsList = props => {
   );
 };
 
-export default AuthorsList;
+const mapStateToProps = (state) =>({
+  authors: state.authorsState.authors
+})
+export default connect(mapStateToProps)(AuthorsList);
